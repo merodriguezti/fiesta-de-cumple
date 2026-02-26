@@ -1,30 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Verificación visual de carga de script
-  const body = document.body;
-  if (body) {
-    const scriptOk = document.createElement("div");
-    scriptOk.id = "script-ok-msg";
-    scriptOk.style.position = "fixed";
-    scriptOk.style.bottom = "10px";
-    scriptOk.style.right = "10px";
-    scriptOk.style.background = "rgba(0,0,0,0.7)";
-    scriptOk.style.color = "#fff";
-    scriptOk.style.padding = "8px 16px";
-    scriptOk.style.borderRadius = "8px";
-    scriptOk.style.fontSize = "1rem";
-    scriptOk.style.zIndex = "9999";
-    scriptOk.innerText = "Script cargado correctamente";
-    body.appendChild(scriptOk);
-    setTimeout(() => scriptOk.remove(), 2500);
-  }
-
   // Fecha objetivo: 03 de Marzo de 2026 (Formato ISO para mayor compatibilidad)
   const targetDate = new Date("2026-03-03T00:00:00").getTime();
+
   // Verificar si la fecha es válida
   if (isNaN(targetDate)) {
-    alert("Error: Fecha objetivo inválida");
     console.error("Fecha objetivo inválida");
+    // Mensaje visual
+    const errorDiv = document.createElement("div");
+    errorDiv.style.position = "fixed";
+    errorDiv.style.top = "10px";
+    errorDiv.style.left = "50%";
+    errorDiv.style.transform = "translateX(-50%)";
+    errorDiv.style.background = "#ff5e5e";
+    errorDiv.style.color = "#fff";
+    errorDiv.style.padding = "16px 32px";
+    errorDiv.style.borderRadius = "8px";
+    errorDiv.style.zIndex = "9999";
+    errorDiv.style.fontWeight = "bold";
+    errorDiv.innerText =
+      "Error: Fecha objetivo inválida. Verifica el formato en script.js";
+    document.body.appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 8000);
     return;
+  }
+
+  // Verificación visual de elementos del contador
+  const missingElements = [];
+  if (!document.getElementById("days")) missingElements.push("days");
+  if (!document.getElementById("hours")) missingElements.push("hours");
+  if (!document.getElementById("minutes")) missingElements.push("minutes");
+  if (!document.getElementById("seconds")) missingElements.push("seconds");
+  if (missingElements.length > 0) {
+    const errorDiv = document.createElement("div");
+    errorDiv.style.position = "fixed";
+    errorDiv.style.top = "10px";
+    errorDiv.style.left = "50%";
+    errorDiv.style.transform = "translateX(-50%)";
+    errorDiv.style.background = "#ff5e5e";
+    errorDiv.style.color = "#fff";
+    errorDiv.style.padding = "16px 32px";
+    errorDiv.style.borderRadius = "8px";
+    errorDiv.style.zIndex = "9999";
+    errorDiv.style.fontWeight = "bold";
+    errorDiv.innerText = `Error: No se encontraron los elementos del contador (${missingElements.join(", ")}). Verifica el HTML.`;
+    document.body.appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 8000);
   }
 
   function updateCountdown() {
@@ -37,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const secondsElement = document.getElementById("seconds");
 
     if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
-      alert("Error: No se encontraron los elementos del contador en el HTML");
       console.error("Elementos del contador no encontrados");
       return;
     }
@@ -157,10 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Botón de celebrar
     const celebrateBtn = document.getElementById("celebrate-btn");
-    if (!celebrateBtn) {
-      alert("Error: No se encontró el botón de celebrar en el HTML");
-      console.error("Botón de celebrar no encontrado");
-    } else {
+    if (celebrateBtn) {
       celebrateBtn.addEventListener("click", () => {
         // Animar botón
         celebrateBtn.classList.add("bottle-pop");
